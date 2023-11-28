@@ -1,0 +1,49 @@
+<!-- templates/employees/employee_details_edit.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee Details</title>
+</head>
+<body>
+    <h1>Edit Details for {{ employee[1] }}</h1> <!-- employee name -->
+
+    <!-- Form for Updating Unavailable Days -->
+    <form action="{{ url_for('employees.update_unavailable_days', employee_id=employee[0]) }}" method="post">
+        <h3>Update Unavailable Days</h3>
+        {% for day_num, day_name in day_names.items() %}
+        <div>
+            <input type="checkbox" id="day-{{ day_num }}" name="unavailable_days" value="{{ day_num }}"
+            {% if day_num in availability %} checked{% endif %}>
+            <label for="day-{{ day_num }}">{{ day_name }}</label>
+        </div>
+        {% endfor %}
+        <input type="submit" value="Update Unavailable Days">
+    </form>
+
+<!-- Form for Updating Shift Preferences -->
+<form action="{{ url_for('employees.update_shift_preferences', employee_id=employee[0]) }}" method="post">
+    <h3>Update Shift Preferences</h3>
+    {% for day_num, day_name in day_names.items() %}
+    <div>
+        <label for="preference-{{ day_num }}">{{ day_name }}:</label>
+        <input type="number" id="preference-{{ day_num }}" name="preference_{{ day_num }}"
+        value="{{ preferences.get(day_num, 0) }}">
+    </div>
+    {% endfor %}
+    <input type="submit" value="Update Shift Preferences">
+</form>
+
+    <!-- Form for Updating Seniority -->
+    <form action="{{ url_for('employees.update_seniority', employee_id=employee[0]) }}" method="post">
+        <h3>Update Seniority</h3>
+        <div>
+            <label for="seniority">Seniority Score:</label>
+            <input type="number" id="seniority" name="seniority" value="{{ seniority }}">
+        </div>
+        <input type="submit" value="Update Seniority">
+    </form>
+
+    <a href="{{ url_for('employees.employee_details', employee_id=employee[0]) }}">Cancel</a>
+</body>
+</html>

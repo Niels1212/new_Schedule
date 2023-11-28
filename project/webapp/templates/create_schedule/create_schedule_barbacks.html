@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Shift Requirements for Barbacks</title>
+    <style>
+        /* Base table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        /* Responsive table */
+        @media screen and (max-width: 600px) {
+            .responsive-table {
+                overflow-x: auto; /* Enables horizontal scrolling on small devices */
+            }
+        }
+
+        /* Styles for flash messages */
+        .flash-messages p {
+            color: green; /* Choose a color that suits your design */
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Weekly Shift Requirements for Barbacks</h1>
+
+    <div class="responsive-table">
+        <!-- Form to manage requirements for barbacks -->
+        <form action="{{ url_for('create_schedule.manage_create_schedule_barback') }}" method="post">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Day / Shift</th>
+                        {% for shift_name in shift_names %}
+                            <th>{{ shift_name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day_idx, day_name in days %}
+                        <tr>
+                            <td>{{ day_name }}</td>
+                            {% for shift_idx in range(shift_names|length) %}
+                                <td>
+                                    <input type="number" name="requirement_{{ day_idx }}_{{ shift_idx + 9 }}" value="{{ shift_requirements[day_idx][shift_idx] }}" min="0">
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <input type="submit" value="Update Requirements">
+        </form>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Back link -->
+        <a href="{{ url_for('output.show_schedule_barback') }}" style="text-decoration: none;">
+            <button type="button">Generate Barback Schedule</button>
+        </a>
+        <a href="{{ url_for('view') }}">Back To Main</a> <!-- Adjust the 'main_view' as per your actual view name -->
+    </div>
+</body>
+</html>

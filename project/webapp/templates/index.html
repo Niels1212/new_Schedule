@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Data</title>
+</head>
+<body>
+    <h1>Scheduling App</h1>
+        <!-- User Info and Logout Button -->
+        {% if 'user_id' in session %}
+        <p>Welcome, {{ session.username }}! <a href="{{ url_for('auth.logout') }}">Logout</a></p>
+        {% else %}
+        <p><a href="{{ url_for('auth.login') }}">Login</a> | <a href="{{ url_for('auth.register') }}">Register</a></p>
+        {% endif %}
+    <br>
+    <a href="{{ url_for('employees.view') }}">Employees</a>
+    <a href="{{ url_for('shifts.view_shifts') }}">Shifts</a>
+    <a href="{{ url_for('create_schedule.view') }}">Create Schedule</a>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Employee</title>
+</head>
+<body>
+    <h1>Edit Employee</h1>
+    <form action="{{ url_for('employees.update_employee', employee_id=employee[0]) }}" method="post">
+        <label for="employee_name">Employee Name:</label>
+        <input type="text" id="employee_name" name="employee_name" value="{{ employee[1] }}" required>
+
+        <!-- Add a new field for the role -->
+        <label for="employee_role">Role:</label>
+        <select id="employee_role" name="employee_role" required>
+            <option value="bartender" {% if employee[2] == 'bartender' %}selected{% endif %}>Bartender</option>
+            <option value="barback" {% if employee[2] == 'barback' %}selected{% endif %}>Barback</option>
+            <!-- Add additional roles as needed -->
+        </select>
+
+        <input type="submit" value="Update Employee">
+    </form>
+    <br>
+    <a href="{{ url_for('employees.view') }}">Back to view data</a>
+
+</body>
+</html>

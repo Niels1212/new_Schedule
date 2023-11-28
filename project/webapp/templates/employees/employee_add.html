@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Employee</title>
+</head>
+<body>
+    <h1>Add Employee</h1>
+    <form action="{{ url_for('employees.add_employee') }}" method="post">
+        <label for="employee_name">Employee Name:</label>
+        <input type="text" id="employee_name" name="employee_name" required>
+
+        <!-- Add a new field for the role -->
+        <label for="employee_role">Role:</label>
+        <select id="employee_role" name="employee_role" required>
+            <option value="bartender">Bartender</option>
+            <option value="barback">Barback</option>
+        </select>
+        <input type="submit" value="Add Employee">
+    </form>
+    <br>
+    <a href="{{ url_for('employees.view') }}">Back to view data</a>
+</body>
+</html>

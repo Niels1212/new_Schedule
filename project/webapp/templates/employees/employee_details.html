@@ -1,0 +1,31 @@
+<!-- templates/employees/employee_details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Details</title>
+</head>
+<body>
+    <h1>Details for {{ employee[1] }}</h1> <!-- employee name -->
+    <h2>Unavailable Days</h2>
+    <ul>
+        {% for day in availability %}
+            <li>{{ day[1] }}</li> <!-- This now references the day name -->
+        {% endfor %}
+    </ul>    
+
+    <h2>Shift Preferences</h2>
+    <ul>
+        {% for day, preference in preferences %}
+            <li>{{ day }}: {{ preference }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Seniority</h2>
+    <p>Seniority Score: {{ seniority[1] }}</p> <!-- adjust index if needed -->
+
+    <!-- Link to edit the employee's details -->
+    <a href="{{ url_for('employees.edit_employee_details', employee_id=employee[0]) }}">Edit Details</a>
+    <a href="{{ url_for('employees.view') }}">Back to Employee List</a>
+</body>
+</html>

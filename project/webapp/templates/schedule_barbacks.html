@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Barback Schedule</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Barback Weekly Schedule</h1>
+    <form action="{{ url_for('create_schedule.manage_create_schedule_barback') }}" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th>Day / Shift</th>
+                    {% for shift in schedule[0]['shifts'] %}
+                        <th>{{ shift['shift_name'] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for day_info in schedule %}
+                <tr>
+                    <td>{{ days_of_week[day_info['day']] }}</td>
+                    {% for shift_info in day_info['shifts'] %}
+                        <td>
+                            {% set employees_needed = shift_info['employees']|length if shift_info['employees'] is defined else 0 %}
+                            {% set total_dropdowns = employees_needed if employees_needed > 0 else 1 %}
+                            {% for i in range(total_dropdowns) %}
+                                <select name="barback_{{ day_info['day'] }}_{{ loop.index }}_{{ i }}">
+                                    <option value="-1" {% if employees_needed == 0 %}selected{% endif %}>Empty</option>
+                                    {% for barback in all_barbacks %}
+                                        <option value="{{ barback[0] }}" {% if employees_needed > 0 and shift_info['employees'][i] == barback[1] %}selected{% endif %}>{{ barback[1] }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <input type="submit" value="Update Schedule">
+    </form>
+
+    <h2>Total Shifts per Barback</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Barback</th>
+                <th>Total Shifts</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee_info in total_shifts %}
+                <tr>
+                    <td>{{ employee_info['employee_name'] }}</td>
+                    <td>{{ employee_info['total_shifts'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('create_schedule.manage_create_schedule_barback') }}">Back to Schedule Management</a>
+</body>
+</html>
